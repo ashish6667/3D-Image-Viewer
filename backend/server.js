@@ -11,6 +11,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+/*  ADD THIS ROOT ROUTE */
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "3D Viewer Backend is running 🚀"
+  });
+});
+
 app.use("/api/viewer", viewerRoutes);
 
 const PORT = process.env.PORT || 5000;
