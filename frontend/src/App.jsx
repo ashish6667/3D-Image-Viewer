@@ -8,12 +8,12 @@ function App() {
   const [wireframe, setWireframe] = useState(false);
 
   return (
-    <div className="flex h-screen bg-gray-900 text-gray-100">
-      
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-900 text-gray-100">
+
       {/* Sidebar */}
-      <div className="w-72 bg-gray-800 border-r border-gray-700 p-6 flex flex-col">
-        
-        <h1 className="text-2xl font-bold mb-8 tracking-wide">
+      <div className="w-full md:w-80 bg-gray-800 border-b md:border-b-0 md:border-r border-gray-700 p-6">
+
+        <h1 className="text-xl md:text-2xl font-bold mb-6">
           3D Product Viewer
         </h1>
 
@@ -24,14 +24,13 @@ function App() {
           setWireframe={setWireframe}
         />
 
-        <div className="mt-auto text-xs text-gray-400 pt-8">
+        <div className="mt-8 text-xs text-gray-400">
           MERN + Three.js Assignment
         </div>
-
       </div>
 
       {/* Viewer Area */}
-      <div className="flex-1">
+      <div className="flex-1 h-[60vh] md:h-screen">
         <Viewer
           modelUrl={modelUrl}
           bgColor={bgColor}
