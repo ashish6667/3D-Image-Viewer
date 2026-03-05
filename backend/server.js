@@ -15,7 +15,7 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.status(200).json({
     status: "success",
-    message: "3D Viewer Backend is running 🚀"
+    message: "3D Viewer Backend is running "
   });
 });
 
