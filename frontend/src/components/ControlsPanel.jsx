@@ -1,9 +1,44 @@
+import { useEffect } from "react";
+import API from "../api";
+
 export default function ControlsPanel({
   setModelUrl,
   setBgColor,
+  bgColor,
   wireframe,
   setWireframe,
 }) {
+  /* ================= LOAD SAVED SETTINGS ================= */
+  useEffect(() => {
+    const loadSettings = async () => {
+      try {
+        const { data } = await API.get("/api/viewer/latest");
+
+        if (data) {
+          setBgColor(data.backgroundColor);
+          setWireframe(data.wireframe);
+        }
+      } catch (error) {
+        console.error("Error loading settings:", error);
+      }
+    };
+
+    loadSettings();
+  }, [setBgColor, setWireframe]);
+
+  /* ================= SAVE SETTINGS ================= */
+  const saveSettings = async (color, wire) => {
+    try {
+      await API.post("/api/viewer/save", {
+        backgroundColor: color,
+        wireframe: wire,
+      });
+    } catch (error) {
+      console.error("Error saving settings:", error);
+    }
+  };
+
+  /* ================= FILE UPLOAD ================= */
   const handleUpload = (e) => {
     const file = e.target.files[0];
 
@@ -76,7 +111,12 @@ export default function ControlsPanel({
 
         <input
           type="color"
-          onChange={(e) => setBgColor(e.target.value)}
+          value={bgColor}
+          onChange={async (e) => {
+            const color = e.target.value;
+            setBgColor(color);
+            await saveSettings(color, wireframe);
+          }}
           className="w-full h-12 rounded-lg cursor-pointer"
         />
       </div>
@@ -90,7 +130,11 @@ export default function ControlsPanel({
         <input
           type="checkbox"
           checked={wireframe}
-          onChange={(e) => setWireframe(e.target.checked)}
+          onChange={async (e) => {
+            const value = e.target.checked;
+            setWireframe(value);
+            await saveSettings(bgColor, value);
+          }}
           className="w-5 h-5 accent-blue-600 cursor-pointer"
         />
       </div>
